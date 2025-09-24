@@ -1,0 +1,72 @@
+/* Tailwind v4 推荐写法 */
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+/* 自定义主题变量（供 bg-moonlens-light 等类使用） */
+@theme {
+  --color-moonlens-light: #304156;
+  --color-moonlens-dark: #2b3a4d;
+  --color-moonlens-bg: #f5f7fa;
+}
+
+@layer base {
+  body { @apply bg-gray-50 text-gray-900; }
+  
+  * {
+    @apply box-border;
+  }
+}
+
+@layer components {
+  /* 自定义组件样式 */
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+}
+
+@layer utilities {
+  /* 自定义工具类 */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+}
+
+/* 保留 Element Plus 样式的优先级 */
+.el-button {
+  @apply font-medium;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
