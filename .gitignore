@@ -32,6 +32,37 @@ dist-ssr
 .codex/
 .mcp.json
 
+# Playwright test artifacts
+.playwright-mcp/
+playwright-report/
+test-results/
+
 # Spec workflow (keep specs but ignore temp files)
 .spec-workflow/templates/
 .spec-workflow/.temp/
+
+# Build and cache files
+.turbo/
+.vercel/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# Testing
+coverage/
+*.lcov
+.nyc_output
+
+# TypeScript
+*.tsbuildinfo
+
+# macOS
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+tmp/
+temp/

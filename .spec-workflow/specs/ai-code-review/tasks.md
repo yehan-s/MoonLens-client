@@ -1,366 +1,264 @@
-# Tasks: AI Code Review
+# Tasks Document
 
-## Implementation Tasks
+## Task List
 
-### Backend Tasks
+- [ ] 1. Create Review Module Structure
+  - File: src/review/review.module.ts, src/review/review.controller.ts, src/review/review.service.ts
+  - Set up the basic NestJS review module with controller and service
+  - Configure module imports and providers for AI code review
+  - Purpose: Establish foundation for AI code review functionality
+  - _Leverage: Existing NestJS app structure and module patterns_
+  - _Requirements: FR1.1, FR1.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer specializing in NestJS | Task: Create review module structure following requirements FR1.1 and FR1.2, implementing controller and service | Restrictions: Follow NestJS best practices, maintain module isolation, use dependency injection | Success: Review module is properly registered and injectable. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 1: Create Review Module Structure
-- [ ] **Files**: `src/review/review.module.ts`, `src/review/review.controller.ts`, `src/review/review.service.ts`
-- **Description**: Set up the basic NestJS review module with controller and service
-- **Dependencies**: None
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer specializing in NestJS
-  Task: Create AI review module structure with proper dependency injection
-  Restrictions: Follow NestJS best practices, modular design
-  _Leverage: Existing NestJS app structure, Bull queue system
-  _Requirements: FR1.1, FR1.2 from requirements.md
-  Success: Review module is registered and basic endpoints work
-  ```
+- [ ] 2. Implement Review Database Schema
+  - File: prisma/schema.prisma (update), src/review/entities/*.entity.ts
+  - Define Review, ReviewComment, ReviewTask models in Prisma
+  - Create corresponding entity classes with relationships
+  - Purpose: Create persistent storage for review data
+  - _Leverage: Existing Prisma setup and database patterns_
+  - _Requirements: Database Schema from design.md_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Database Developer | Task: Create review-related database schemas following the database design, defining all review models | Restrictions: Use UUID for IDs, implement proper relationships, add indexes | Success: Prisma migration runs successfully with review models. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 2: Implement Review Database Schema
-- [ ] **Files**: `prisma/schema.prisma` (update), `src/review/entities/*.entity.ts`
-- **Description**: Define Review, ReviewIssue, ReviewSuggestion, and ReviewChat models
-- **Dependencies**: Task 1
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Database Developer
-  Task: Create review-related database schemas with relationships
-  Restrictions: Use UUID, implement cascade deletes, optimize indexes
-  _Leverage: Existing Prisma setup, Project and User models
-  _Requirements: Database Schema from design.md
-  Success: Prisma migration successful with all review entities
-  ```
+- [ ] 3. Create AI Provider Interface
+  - File: src/review/interfaces/ai-provider.interface.ts
+  - Define abstract AI provider interface for multiple providers
+  - Standardize request/response formats across providers
+  - Purpose: Enable provider-agnostic AI integration
+  - _Leverage: TypeScript interfaces, design patterns_
+  - _Requirements: FR2.1, FR2.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Architecture Developer | Task: Create AI provider interface following requirements FR2.1 and FR2.2, defining abstract methods | Restrictions: Ensure type safety, handle different response formats, support multiple models | Success: Interface enables seamless provider switching. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 3: Implement AI Provider Interface
-- [ ] **Files**: `src/review/providers/provider.interface.ts`, `src/review/providers/base.provider.ts`
-- **Description**: Create abstract AI provider interface and base implementation
-- **Dependencies**: Task 1
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Senior Backend Developer
-  Task: Design flexible AI provider interface for multiple models
-  Restrictions: Support async operations, error handling, token tracking
-  _Leverage: TypeScript interfaces, dependency injection
-  _Requirements: FR2.1, FR2.2, FR2.3 from requirements.md
-  Success: Clean interface supporting multiple AI providers
-  ```
+- [ ] 4. Implement OpenAI Provider
+  - File: src/review/providers/openai.provider.ts
+  - Create OpenAI integration service implementing provider interface
+  - Handle API authentication and rate limiting
+  - Purpose: Enable GPT-4 code review capabilities
+  - _Leverage: OpenAI SDK, provider interface_
+  - _Requirements: FR2.3, NFR1.1_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Integration Developer | Task: Implement OpenAI provider following requirements FR2.3 and NFR1.1, with GPT-4 integration | Restrictions: Handle API limits, implement retry logic, secure API keys | Success: OpenAI provider works reliably for code reviews. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 4: Implement OpenAI Provider
-- [ ] **Files**: `src/review/providers/openai.provider.ts`, `src/review/prompts/openai-prompts.ts`
-- **Description**: Create OpenAI GPT-4 integration with prompt engineering
-- **Dependencies**: Task 3
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: AI Integration Developer
-  Task: Implement OpenAI provider with GPT-4 and GPT-4-32k support
-  Restrictions: Handle rate limits, implement retry logic, optimize prompts
-  _Leverage: OpenAI SDK, existing configuration service
-  _Requirements: FR2.1, NFR4.1 from requirements.md
-  Success: OpenAI models can perform code reviews with JSON output
-  ```
+- [ ] 5. Add Claude Provider
+  - File: src/review/providers/claude.provider.ts
+  - Implement Anthropic Claude integration with provider interface
+  - Support Claude 3 models for code analysis
+  - Purpose: Enable Claude AI code review capabilities
+  - _Leverage: Anthropic SDK, provider interface_
+  - _Requirements: FR2.4, NFR1.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Integration Developer | Task: Add Claude provider following requirements FR2.4 and NFR1.2, implementing Anthropic integration | Restrictions: Handle API limits, manage context windows, secure API keys | Success: Claude provider provides high-quality code analysis. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 5: Implement Anthropic Provider
-- [ ] **Files**: `src/review/providers/anthropic.provider.ts`, `src/review/prompts/claude-prompts.ts`
-- **Description**: Create Anthropic Claude integration with optimized prompts
-- **Dependencies**: Task 3
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: AI Integration Developer
-  Task: Implement Anthropic provider with Claude 3 models
-  Restrictions: Handle API differences, optimize for Claude's strengths
-  _Leverage: Anthropic SDK, provider interface
-  _Requirements: FR2.2, NFR4.1 from requirements.md
-  Success: Claude models integrated with consistent output format
-  ```
+- [ ] 6. Create Code Parser Service
+  - File: src/review/services/code-parser.service.ts
+  - Parse and analyze code structure using AST
+  - Support multiple programming languages
+  - Purpose: Extract code context for AI analysis
+  - _Leverage: Tree-sitter, language parsers_
+  - _Requirements: FR3.1, FR3.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Create code parser service following requirements FR3.1 and FR3.2, supporting multiple languages | Restrictions: Handle large files efficiently, extract relevant context, maintain performance | Success: Code is parsed accurately for AI review. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 6: Implement Code Analysis Service
-- [ ] **Files**: `src/review/services/code-analyzer.service.ts`, `src/review/utils/diff-parser.ts`
-- **Description**: Create service for analyzing code diffs and extracting metrics
-- **Dependencies**: Task 1
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Implement diff parsing and code complexity analysis
-  Restrictions: Support multiple languages, handle large diffs
-  _Leverage: Existing file type detection, diff parsing libraries
-  _Requirements: FR3.1, FR3.3 from requirements.md
-  Success: Can parse diffs and calculate complexity metrics
-  ```
+- [ ] 7. Implement Review Engine
+  - File: src/review/services/review-engine.service.ts
+  - Core review logic and orchestration service
+  - Coordinate AI providers and manage review workflow
+  - Purpose: Orchestrate the complete review process
+  - _Leverage: AI providers, code parser, queue system_
+  - _Requirements: FR4.1, FR4.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Senior Backend Developer | Task: Implement review engine following requirements FR4.1 and FR4.2, orchestrating review workflow | Restrictions: Handle failures gracefully, support parallel processing, maintain state | Success: Review engine coordinates all review components effectively. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 7: Implement Context Builder Service
-- [ ] **Files**: `src/review/services/context-builder.service.ts`
-- **Description**: Build comprehensive context for AI review including related files
-- **Dependencies**: Task 6
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Build review context with project info and related files
-  Restrictions: Optimize context size, include relevant dependencies
-  _Leverage: GitLab service, project service
-  _Requirements: FR3.2, FR3.4 from requirements.md
-  Success: Rich context provided to AI for better reviews
-  ```
+- [ ] 8. Add Review Queue
+  - File: src/review/queues/review.queue.ts
+  - Implement async processing with Bull queue
+  - Handle job retries and dead letter queue
+  - Purpose: Enable scalable async review processing
+  - _Leverage: Bull queue, Redis backend_
+  - _Requirements: FR4.3, NFR2.1_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Add review queue following requirements FR4.3 and NFR2.1, implementing async processing | Restrictions: Handle job failures, implement retry logic, monitor queue health | Success: Reviews are processed asynchronously and reliably. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 8: Implement Result Processing Service
-- [ ] **Files**: `src/review/services/result-processor.service.ts`
-- **Description**: Process and enhance AI review results
-- **Dependencies**: Task 1
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Process AI results with deduplication and prioritization
-  Restrictions: Categorize issues, generate actionable suggestions
-  _Leverage: Issue classification logic, severity mapping
-  _Requirements: FR4.1, FR5.2, FR5.3 from requirements.md
-  Success: AI results are processed into structured, actionable format
-  ```
+- [ ] 9. Create Prompt Templates
+  - File: src/review/templates/*.prompt.ts
+  - AI prompt templates for different programming languages
+  - Customizable prompts for different review types
+  - Purpose: Optimize AI responses for specific contexts
+  - _Leverage: Template engine, language specifications_
+  - _Requirements: FR3.3, FR3.4_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: AI Prompt Engineer | Task: Create prompt templates following requirements FR3.3 and FR3.4, for multiple languages | Restrictions: Keep prompts concise, focus on actionable feedback, support customization | Success: Prompts generate high-quality, relevant AI responses. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 9: Implement Review Queue Processor
-- [ ] **Files**: `src/review/processors/review.processor.ts`
-- **Description**: Create Bull queue processor for async review processing
-- **Dependencies**: Tasks 4, 5, 8
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Implement async review processing with priority queue
-  Restrictions: Handle retries, implement concurrency control
-  _Leverage: Bull queue, Redis for locking
-  _Requirements: FR5.5, NFR1.2 from requirements.md
-  Success: Reviews process asynchronously with proper queue management
-  ```
+- [ ] 10. Implement Result Aggregator
+  - File: src/review/services/result-aggregator.service.ts
+  - Combine and prioritize AI findings from multiple providers
+  - Deduplicate and rank issues by severity
+  - Purpose: Provide unified, prioritized review results
+  - _Leverage: Review engine, scoring algorithms_
+  - _Requirements: FR5.1, FR5.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Implement result aggregator following requirements FR5.1 and FR5.2, combining AI findings | Restrictions: Remove duplicates, maintain context, prioritize critical issues | Success: Aggregated results are clear and actionable. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 10: Implement Token Optimization
-- [ ] **Files**: `src/review/services/token-optimizer.service.ts`
-- **Description**: Optimize token usage for cost efficiency
-- **Dependencies**: Task 6
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Implement token counting and diff chunking strategies
-  Restrictions: Maintain context quality while reducing tokens
-  _Leverage: Tokenizer libraries, chunking algorithms
-  _Requirements: NFR4.1, NFR4.3 from requirements.md
-  Success: Token usage optimized without losing review quality
-  ```
+- [ ] 11. Create Review Store
+  - File: src/stores/review.ts
+  - Frontend state management for review data
+  - Manage review lists, current review, and findings
+  - Purpose: Centralize review state in frontend
+  - _Leverage: Pinia state management, existing patterns_
+  - _Requirements: State management requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend State Developer | Task: Create review store following state management requirements, managing review data | Restrictions: Maintain data consistency, handle async operations, optimize updates | Success: Review state is managed efficiently with proper reactivity. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-### Frontend Tasks
+- [ ] 12. Build Review Dashboard
+  - File: src/views/ReviewDashboard.vue
+  - Main review interface page with overview
+  - Display active reviews and recent findings
+  - Purpose: Provide central review management interface
+  - _Leverage: Element Plus components, existing layouts_
+  - _Requirements: UI/UX requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Vue.js Frontend Developer | Task: Build review dashboard following UI/UX requirements, with overview and navigation | Restrictions: Ensure responsive design, optimize loading, maintain accessibility | Success: Dashboard provides clear review overview and navigation. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 11: Create Review Trigger Interface
-- [ ] **Files**: `src/views/review/ReviewTrigger.vue`, `src/api/review.ts`
-- **Description**: Build UI for triggering manual reviews with configuration
-- **Dependencies**: None
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer specializing in Vue 3
-  Task: Create review trigger UI with model selection and config
-  Restrictions: Validate inputs, show loading states
-  _Leverage: Element Plus forms, existing API service
-  _Requirements: User Story 1, FR1.2 from requirements.md
-  Success: Users can trigger reviews with custom configuration
-  ```
+- [ ] 13. Create Code Viewer Component
+  - File: src/components/review/CodeViewer.vue
+  - Syntax-highlighted code display with line numbers
+  - Support inline comments and issue markers
+  - Purpose: Display code with review annotations
+  - _Leverage: Prism.js or Monaco Editor, Element Plus_
+  - _Requirements: FR6.1, UI requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create code viewer following requirement FR6.1, with syntax highlighting and annotations | Restrictions: Handle large files, support multiple languages, maintain performance | Success: Code displays clearly with review annotations. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 12: Create Review Result Display
-- [ ] **Files**: `src/views/review/ReviewResult.vue`, `src/components/review/IssueCard.vue`
-- **Description**: Build comprehensive review result display interface
-- **Dependencies**: Task 11
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Create result display with issues, suggestions, and score
-  Restrictions: Organize by severity, support code snippets
-  _Leverage: Element Plus components, syntax highlighting
-  _Requirements: User Story 3, AC3 from requirements.md
-  Success: Review results display clearly with actionable items
-  ```
+- [ ] 14. Add Issue List Component
+  - File: src/components/review/IssueList.vue
+  - Display and filter review findings by severity
+  - Group issues by category and file
+  - Purpose: Organize and present review findings
+  - _Leverage: Element Plus table and filter components_
+  - _Requirements: FR6.2, FR6.3_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Vue.js Developer | Task: Add issue list component following requirements FR6.2 and FR6.3, with filtering and grouping | Restrictions: Handle large issue lists, implement virtual scrolling, maintain usability | Success: Issues are displayed clearly with effective filtering. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 13: Create Code Diff Viewer
-- [ ] **Files**: `src/components/review/CodeDiff.vue`, `src/utils/diff-viewer.ts`
-- **Description**: Build code diff viewer with inline suggestions
-- **Dependencies**: Task 12
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Create split diff view with syntax highlighting
-  Restrictions: Support large files, inline annotations
-  _Leverage: Monaco editor or diff library
-  _Requirements: FR4.3, User Story 3 from requirements.md
-  Success: Code changes display with suggestions inline
-  ```
+- [ ] 15. Build Review Settings
+  - File: src/components/review/ReviewSettings.vue
+  - Configure review rules and AI models
+  - Manage review thresholds and preferences
+  - Purpose: Allow customization of review parameters
+  - _Leverage: Element Plus form components_
+  - _Requirements: FR7.1, FR7.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Build review settings following requirements FR7.1 and FR7.2, with rule configuration | Restrictions: Validate all settings, provide defaults, show impact preview | Success: Review settings can be customized effectively. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 14: Create Review History View
-- [ ] **Files**: `src/views/review/ReviewHistory.vue`, `src/components/review/HistoryChart.vue`
-- **Description**: Build review history interface with statistics
-- **Dependencies**: Task 11
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Create history view with filtering and trend charts
-  Restrictions: Support date ranges, export functionality
-  _Leverage: ECharts for visualizations, Element Plus table
-  _Requirements: User Story 4, AC4 from requirements.md
-  Success: Review history displays with trend analysis
-  ```
+- [ ] 16. Create Review Progress Display
+  - File: src/components/review/ReviewProgress.vue
+  - Real-time review progress tracking with stages
+  - Show file processing status and ETA
+  - Purpose: Provide visibility into review progress
+  - _Leverage: WebSocket connection, progress components_
+  - _Requirements: FR6.4, NFR2.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create review progress display following requirements FR6.4 and NFR2.2, with real-time updates | Restrictions: Update efficiently, show accurate progress, handle connection loss | Success: Progress displays accurately in real-time. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 15: Create Chat Interface
-- [ ] **Files**: `src/components/review/ChatInterface.vue`, `src/composables/useReviewChat.ts`
-- **Description**: Build interactive chat for review discussions
-- **Dependencies**: Task 12
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Create chat UI for AI interactions about reviews
-  Restrictions: Stream responses, maintain context
-  _Leverage: WebSocket for real-time, Markdown rendering
-  _Requirements: User Story 5, FR2.4 from requirements.md
-  Success: Users can chat with AI about review suggestions
-  ```
+- [ ] 17. Add Review API Client
+  - File: src/api/review.ts
+  - Frontend API client for review operations
+  - Handle authentication and error responses
+  - Purpose: Manage review API calls from frontend
+  - _Leverage: Axios instance, interceptors_
+  - _Requirements: API integration requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend API Developer | Task: Add review API client following integration requirements, with error handling | Restrictions: Handle auth properly, implement retry logic, maintain type safety | Success: Frontend communicates with review endpoints reliably. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 16: Implement Review Store
-- [ ] **Files**: `src/stores/review.ts`
-- **Description**: Create Pinia store for review state management
-- **Dependencies**: Tasks 11-15
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Implement review store with state and actions
-  Restrictions: Handle loading states, cache results
-  _Leverage: Pinia composition API, existing patterns
-  _Requirements: State management requirements
-  Success: Review state centrally managed and reactive
-  ```
+- [ ] 18. Implement WebSocket Updates
+  - File: src/review/gateways/review.gateway.ts
+  - Real-time review status updates via WebSocket
+  - Broadcast progress to connected clients
+  - Purpose: Enable real-time collaboration on reviews
+  - _Leverage: Socket.io, existing WebSocket setup_
+  - _Requirements: FR8.1, FR8.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Implement WebSocket gateway following requirements FR8.1 and FR8.2, for real-time updates | Restrictions: Authenticate connections, implement room-based updates, handle disconnections | Success: Real-time updates work reliably across clients. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-### Integration Tasks
+- [ ] 19. Add Review Caching
+  - File: src/review/cache/review.cache.ts
+  - Cache review results in Redis for performance
+  - Implement cache invalidation strategies
+  - Purpose: Improve performance for repeated reviews
+  - _Leverage: Redis, cache-manager_
+  - _Requirements: NFR3.1, NFR3.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Add review caching following requirements NFR3.1 and NFR3.2, with Redis backend | Restrictions: Maintain cache consistency, implement TTL, handle invalidation | Success: Caching improves performance without stale data. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 17: Connect Review to GitLab Integration
-- [ ] **Files**: Update GitLab and Review services
-- **Description**: Wire MR events to trigger automatic reviews
-- **Dependencies**: GitLab integration, Tasks 1-10
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Full-stack Developer
-  Task: Connect GitLab webhooks to review triggering
-  Restrictions: Handle incremental reviews, sync results
-  _Leverage: GitLab event processors, review queue
-  _Requirements: User Story 1, FR1.1, FR1.5 from requirements.md
-  Success: MR events automatically trigger AI reviews
-  ```
+- [ ] 20. Create Metrics Service
+  - File: src/review/services/metrics.service.ts
+  - Track review statistics and performance metrics
+  - Generate analytics and usage reports
+  - Purpose: Monitor and optimize review system
+  - _Leverage: Prometheus metrics, aggregation services_
+  - _Requirements: FR9.1, FR9.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Analytics Developer | Task: Create metrics service following requirements FR9.1 and FR9.2, tracking review statistics | Restrictions: Optimize data collection, aggregate efficiently, maintain privacy | Success: Metrics provide actionable insights. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 18: Implement Review Result Sync
-- [ ] **Files**: `src/review/services/gitlab-sync.service.ts`
-- **Description**: Sync review results back to GitLab as comments
-- **Dependencies**: Task 17
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Full-stack Developer
-  Task: Post review results as GitLab MR comments
-  Restrictions: Format for GitLab, handle rate limits
-  _Leverage: GitLab API service, comment formatting
-  _Requirements: User Story 4, FR5.1 from requirements.md
-  Success: Review results appear in GitLab MR discussions
-  ```
+- [ ] 21. Write Unit Tests - Backend
+  - File: src/review/**/*.spec.ts
+  - Test review services and controllers
+  - Mock AI providers and external dependencies
+  - Purpose: Ensure backend code quality
+  - _Leverage: Jest, testing utilities_
+  - _Requirements: Testing requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Write unit tests for review services following testing requirements | Restrictions: Mock external APIs, test error cases, maintain isolation | Success: All backend tests pass with good coverage. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 19: Implement Cost Monitoring
-- [ ] **Files**: `src/review/services/cost-monitor.service.ts`, `src/views/admin/CostDashboard.vue`
-- **Description**: Track and display AI API usage costs
-- **Dependencies**: Tasks 4, 5
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Full-stack Developer
-  Task: Implement cost tracking and monitoring dashboard
-  Restrictions: Real-time tracking, usage alerts
-  _Leverage: Token usage data, pricing calculations
-  _Requirements: NFR4.5, Success Metrics from requirements.md
-  Success: API costs tracked and displayed with alerts
-  ```
+- [ ] 22. Write Unit Tests - Frontend
+  - File: src/components/review/**/*.spec.ts
+  - Test review components and interactions
+  - Mock API responses and WebSocket
+  - Purpose: Ensure frontend code quality
+  - _Leverage: Vitest, Vue Test Utils_
+  - _Requirements: Testing requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend QA Engineer | Task: Test review components following testing requirements | Restrictions: Mock API calls, test user interactions, ensure stability | Success: Frontend tests pass with good coverage. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-### Testing Tasks
+- [ ] 23. Integration Testing
+  - File: tests/e2e/code-review.spec.ts
+  - End-to-end review workflow tests
+  - Test complete review process from start to finish
+  - Purpose: Validate full review system integration
+  - _Leverage: Playwright, test fixtures_
+  - _Requirements: E2E testing requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: E2E Test Engineer | Task: Write end-to-end review tests following testing requirements | Restrictions: Use mock AI responses, test all workflows, ensure reliability | Success: E2E tests validate complete review process. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 20: Write Unit Tests
-- [ ] **Files**: `src/review/__tests__/*.spec.ts`
-- **Description**: Create unit tests for review services
-- **Dependencies**: Tasks 1-10
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: QA Developer
-  Task: Write unit tests for all review services
-  Restrictions: Mock AI providers, test error cases
-  _Leverage: Jest, mock factories
-  _Requirements: Testing Strategy from design.md
-  Success: >80% code coverage with edge cases tested
-  ```
+- [ ] 24. Add Rate Limiting
+  - File: src/review/guards/rate-limit.guard.ts
+  - Prevent AI API abuse with rate limiting
+  - Implement per-user and global limits
+  - Purpose: Protect system from overuse
+  - _Leverage: Rate limiter middleware, Redis_
+  - _Requirements: NFR4.1, NFR4.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Security Developer | Task: Add rate limiting following requirements NFR4.1 and NFR4.2 | Restrictions: Balance usability and protection, log violations, implement progressive delays | Success: Rate limiting prevents abuse without hindering legitimate use. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 21: Write Integration Tests
-- [ ] **Files**: `tests/e2e/review.spec.ts`
-- **Description**: Create E2E tests for review flows
-- **Dependencies**: Tasks 1-19
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: QA Developer
-  Task: Write E2E tests for complete review workflow
-  Restrictions: Test with mock AI responses
-  _Leverage: Supertest, mock AI providers
-  _Requirements: AC1, AC2 from requirements.md
-  Success: Critical review paths tested end-to-end
-  ```
+- [ ] 25. Implement Export Service
+  - File: src/review/services/export.service.ts
+  - Export reviews as PDF/Markdown/JSON
+  - Generate formatted reports with findings
+  - Purpose: Enable review result sharing and archiving
+  - _Leverage: PDF libraries, Markdown formatter_
+  - _Requirements: FR10.1, FR10.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Implement export service following requirements FR10.1 and FR10.2, supporting multiple formats | Restrictions: Handle large exports, maintain formatting, include all metadata | Success: Reviews export correctly in all formats. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 22: Performance and Load Testing
-- [ ] **Files**: `tests/performance/review-load.spec.ts`
-- **Description**: Test review system under load
-- **Dependencies**: Tasks 1-19
-- **_Prompt**: 
-  ```
-  Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: QA Developer
-  Task: Create load tests for concurrent reviews
-  Restrictions: Test queue performance, measure response times
-  _Leverage: K6 or Artillery
-  _Requirements: NFR1.1, NFR1.2 from requirements.md
-  Success: System handles 10+ concurrent reviews efficiently
-  ```
+- [ ] 26. Add Custom Rules Engine
+  - File: src/review/services/rules-engine.service.ts
+  - User-defined review rules and patterns
+  - Support regex and AST-based rules
+  - Purpose: Allow customization of review criteria
+  - _Leverage: Rules engine library, pattern matching_
+  - _Requirements: FR7.3, FR7.4_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Senior Backend Developer | Task: Add custom rules engine following requirements FR7.3 and FR7.4, with user-defined patterns | Restrictions: Validate rule syntax, handle complex patterns, maintain performance | Success: Custom rules work alongside AI analysis. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-## Task Summary
+- [ ] 27. Performance Optimization
+  - File: Multiple files
+  - Optimize review processing speed and memory usage
+  - Implement batching and parallel processing
+  - Purpose: Ensure system meets performance requirements
+  - _Leverage: Performance profiling tools, caching_
+  - _Requirements: NFR1.1, NFR1.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Performance Engineer | Task: Optimize performance following requirements NFR1.1 and NFR1.2 | Restrictions: Maintain functionality, document optimizations, measure improvements | Success: System meets all performance targets. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-**Total Tasks**: 22
-- Backend: 10 tasks
-- Frontend: 6 tasks
-- Integration: 3 tasks
-- Testing: 3 tasks
+- [ ] 28. Security Audit
+  - File: Multiple files
+  - Review security and API key handling
+  - Implement secure storage and transmission
+  - Purpose: Ensure system security and compliance
+  - _Leverage: Security scanning tools, encryption_
+  - _Requirements: NFR5.1, NFR5.2_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Security Engineer | Task: Conduct security audit following requirements NFR5.1 and NFR5.2 | Restrictions: Follow security best practices, encrypt sensitive data, audit access | Success: System passes security audit with no vulnerabilities. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-**Estimated Time**: 4-5 weeks
-- Week 1: Tasks 1-5 (Core AI integration)
-- Week 2: Tasks 6-10 (Processing pipeline)
-- Week 3: Tasks 11-16 (Frontend implementation)
-- Week 4: Tasks 17-19 (Integration)
-- Week 5: Tasks 20-22 (Testing and optimization)
-
-## Success Criteria
-
-- [ ] All unit tests passing with >80% coverage
-- [ ] E2E tests covering review flows
-- [ ] Average review time < 2 minutes
-- [ ] Support 10+ concurrent reviews
-- [ ] Cost per review < $0.1
-- [ ] User satisfaction > 4.2/5.0
-- [ ] Documentation complete
+- [ ] 29. Documentation
+  - File: docs/ai-code-review.md
+  - Document AI review features and setup guide
+  - Include API documentation and troubleshooting
+  - Purpose: Help users understand and use the system
+  - _Leverage: Documentation templates_
+  - _Requirements: Documentation requirements_
+  - _Prompt: Implement the task for spec ai-code-review, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Technical Writer | Task: Document AI review system following documentation requirements | Restrictions: Keep documentation current, include examples, cover common issues | Success: Documentation is comprehensive and helpful. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._

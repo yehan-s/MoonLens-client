@@ -1,272 +1,192 @@
-# Tasks: User Authentication System
+# Tasks Document
 
-## Implementation Tasks
+## Task List  
 
-### Backend Tasks
+- [ ] 1. Create Auth Module Structure
+  - File: src/auth/auth.module.ts, src/auth/auth.controller.ts, src/auth/auth.service.ts
+  - Set up the basic NestJS auth module with controller and service
+  - Configure module imports and providers
+  - Purpose: Establish foundation for authentication system
+  - _Leverage: Existing NestJS app module structure_
+  - _Requirements: FR1.1, FR1.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer specializing in NestJS | Task: Create the auth module structure with proper imports and providers following requirements FR1.1 and FR1.2 | Restrictions: Follow NestJS best practices, use dependency injection, maintain module isolation | Success: Auth module is properly registered and injectable. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 1: Create Auth Module Structure
-- [ ] **Files**: `src/auth/auth.module.ts`, `src/auth/auth.controller.ts`, `src/auth/auth.service.ts`
-- **Description**: Set up the basic NestJS auth module with controller and service
-- **Dependencies**: None
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer specializing in NestJS
-  Task: Create the auth module structure with proper imports and providers
-  Restrictions: Follow NestJS best practices, use dependency injection
-  _Leverage: Existing NestJS app module structure
-  _Requirements: FR1.1, FR1.2 from requirements.md
-  Success: Auth module is properly registered and injectable
-  ```
+- [ ] 2. Implement User Entity and Database Schema
+  - File: prisma/schema.prisma (update), src/auth/entities/user.entity.ts
+  - Define User and Session models in Prisma schema
+  - Create corresponding entity classes
+  - Purpose: Create persistent storage for user data
+  - _Leverage: Existing Prisma setup_
+  - _Requirements: Database Schema from design.md_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Database Developer | Task: Create User and Session models in Prisma schema with proper relationships following the database design | Restrictions: Use UUID for IDs, include all required fields from design, add proper indexes | Success: Prisma migration runs successfully, models are generated correctly. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 2: Implement User Entity and Database Schema
-- [ ] **Files**: `prisma/schema.prisma` (update), `src/auth/entities/user.entity.ts`
-- **Description**: Define User model in Prisma schema and create corresponding entity
-- **Dependencies**: Task 1
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Database Developer
-  Task: Create User and Session models in Prisma schema with proper relationships
-  Restrictions: Use UUID for IDs, include all required fields from design
-  _Leverage: Existing Prisma setup
-  _Requirements: Database Schema from design.md
-  Success: Prisma migration runs successfully, models are generated
-  ```
+- [ ] 3. Implement Registration Endpoint
+  - File: src/auth/dto/register.dto.ts, src/auth/auth.controller.ts, src/auth/auth.service.ts
+  - Create registration endpoint with validation and password hashing
+  - Implement email uniqueness check
+  - Purpose: Allow users to create accounts
+  - _Leverage: class-validator for DTO validation, bcrypt for hashing_
+  - _Requirements: FR1.2, NFR1.1_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Implement user registration with bcrypt password hashing and validation following requirements FR1.2 and NFR1.1 | Restrictions: Validate email format, enforce password policy, check uniqueness, hash passwords securely | Success: Users can register with proper validation and hashed passwords. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 3: Implement Registration Endpoint
-- [ ] **Files**: `src/auth/dto/register.dto.ts`, `src/auth/auth.controller.ts`, `src/auth/auth.service.ts`
-- **Description**: Create registration endpoint with validation and password hashing
-- **Dependencies**: Task 2
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Implement user registration with bcrypt password hashing and validation
-  Restrictions: Validate email format, enforce password policy, check uniqueness
-  _Leverage: class-validator for DTO validation
-  _Requirements: FR1.2, NFR1.1 from requirements.md
-  Success: Users can register with proper validation and hashed passwords
-  ```
+- [ ] 4. Implement Login Endpoint
+  - File: src/auth/dto/login.dto.ts, src/auth/auth.controller.ts, src/auth/auth.service.ts
+  - Create login endpoint with JWT token generation
+  - Validate credentials and create session
+  - Purpose: Authenticate users and issue tokens
+  - _Leverage: @nestjs/jwt, passport_
+  - _Requirements: FR2.1, FR2.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Create login endpoint with JWT token generation following requirements FR2.1 and FR2.2 | Restrictions: Validate credentials properly, generate secure tokens, handle failed attempts | Success: Users can login and receive valid JWT tokens. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 4: Implement JWT Strategy and Guards
-- [ ] **Files**: `src/auth/strategies/jwt.strategy.ts`, `src/auth/guards/jwt-auth.guard.ts`
-- **Description**: Set up Passport JWT strategy and authentication guards
-- **Dependencies**: Task 1
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Security Developer
-  Task: Configure JWT strategy with Passport and create auth guards
-  Restrictions: Use RS256 algorithm if possible, validate token expiry
-  _Leverage: @nestjs/passport and @nestjs/jwt packages
-  _Requirements: FR1.1, NFR3 from requirements.md
-  Success: JWT tokens are properly validated on protected routes
-  ```
+- [ ] 5. Implement JWT Strategy
+  - File: src/auth/strategies/jwt.strategy.ts, src/auth/guards/jwt-auth.guard.ts
+  - Set up Passport JWT strategy for authentication
+  - Create auth guard for protected routes
+  - Purpose: Secure API endpoints with JWT validation
+  - _Leverage: @nestjs/passport, passport-jwt_
+  - _Requirements: NFR2.1, NFR2.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Security Developer | Task: Set up Passport JWT strategy for authentication following requirements NFR2.1 and NFR2.2 | Restrictions: Validate token signature, check expiration, handle invalid tokens | Success: JWT authentication works on protected routes. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 5: Implement Login Endpoint
-- [ ] **Files**: `src/auth/dto/login.dto.ts`, `src/auth/auth.controller.ts`, `src/auth/auth.service.ts`
-- **Description**: Create login endpoint with JWT token generation
-- **Dependencies**: Task 3, Task 4
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Implement login with email/password validation and JWT generation
-  Restrictions: Implement rate limiting, handle failed attempts
-  _Leverage: JWT service from Task 4
-  _Requirements: User Story 2, FR1.2 from requirements.md
-  Success: Users can login and receive valid JWT tokens
-  ```
+- [ ] 6. Add Session Management
+  - File: src/auth/services/session.service.ts
+  - Implement session tracking and management
+  - Handle concurrent sessions and revocation
+  - Purpose: Manage user sessions effectively
+  - _Leverage: Redis for session storage_
+  - _Requirements: FR3.1, FR3.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Implement session tracking and management following requirements FR3.1 and FR3.2 | Restrictions: Track all sessions, support revocation, handle concurrent logins | Success: Session management works with proper tracking and control. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 6: Implement Token Refresh Mechanism
-- [ ] **Files**: `src/auth/auth.controller.ts`, `src/auth/auth.service.ts`
-- **Description**: Create refresh token endpoint and rotation mechanism
-- **Dependencies**: Task 5
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Backend Developer
-  Task: Implement refresh token rotation with family tracking
-  Restrictions: Invalidate old refresh tokens, detect token reuse
-  _Leverage: Session model from Task 2
-  _Requirements: FR1.4, FR4.2 from requirements.md
-  Success: Tokens can be refreshed securely with rotation
-  ```
+- [ ] 7. Create Login Page Component
+  - File: src/views/Login.vue
+  - Build responsive login page with form validation
+  - Implement remember me functionality
+  - Purpose: Provide user login interface
+  - _Leverage: Element Plus form components, Tailwind CSS_
+  - _Requirements: UI/UX requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Vue.js Frontend Developer | Task: Build responsive login page with form validation following UI/UX requirements | Restrictions: Ensure responsive design, validate inputs client-side, provide feedback | Success: Login page works on all devices with proper validation. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-### Frontend Tasks
+- [ ] 8. Create Registration Page
+  - File: src/views/Register.vue
+  - Build user registration form with validation
+  - Implement password strength indicator
+  - Purpose: Allow users to create accounts
+  - _Leverage: Element Plus components, password strength library_
+  - _Requirements: FR1.2, UI requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Build user registration form with validation following requirement FR1.2 | Restrictions: Validate all fields, show password strength, match password confirmation | Success: Registration form works with comprehensive validation. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 7: Create Auth Store with Pinia
-- [ ] **Files**: `src/stores/auth.ts`
-- **Description**: Implement Pinia store for authentication state management
-- **Dependencies**: None
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer specializing in Vue 3
-  Task: Create Pinia auth store with state, getters, and actions
-  Restrictions: Use composition API, handle token storage properly
-  _Leverage: Existing Pinia setup
-  _Requirements: State Management section from design.md
-  Success: Auth state is globally accessible and reactive
-  ```
+- [ ] 9. Implement User Store
+  - File: src/stores/user.ts
+  - Create Pinia store for user authentication state
+  - Manage login/logout and user data
+  - Purpose: Centralize authentication state
+  - _Leverage: Pinia state management_
+  - _Requirements: State management requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend State Management Developer | Task: Create Pinia store for user authentication state following state management requirements | Restrictions: Maintain state consistency, handle async operations, persist state properly | Success: User store manages authentication state correctly. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 8: Create Login View Component
-- [ ] **Files**: `src/views/auth/LoginView.vue`, `src/router/index.ts` (update)
-- **Description**: Build login page with form validation and error handling
-- **Dependencies**: Task 7
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Create login view with Element Plus form components
-  Restrictions: Validate on client side, show loading states
-  _Leverage: Element Plus components, auth store
-  _Requirements: User Story 2, AC2 from requirements.md
-  Success: Users can login through a polished UI
-  ```
+- [ ] 10. Add Auth Guard for Routes
+  - File: src/router/guards/auth.guard.ts
+  - Implement route guards for protected pages
+  - Handle unauthorized access redirects
+  - Purpose: Protect authenticated routes
+  - _Leverage: Vue Router navigation guards_
+  - _Requirements: NFR2.3, routing requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Security Developer | Task: Implement route guards for protected pages following requirement NFR2.3 | Restrictions: Check authentication before navigation, redirect properly, maintain return URL | Success: Protected routes are secured with proper redirects. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 9: Create Registration View Component
-- [ ] **Files**: `src/views/auth/RegisterView.vue`, `src/router/index.ts` (update)
-- **Description**: Build registration page with password strength indicator
-- **Dependencies**: Task 7
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Create registration view with comprehensive validation
-  Restrictions: Include password confirmation, terms agreement
-  _Leverage: Element Plus, existing Login component patterns
-  _Requirements: User Story 1, AC1 from requirements.md
-  Success: Users can register with clear feedback
-  ```
+- [ ] 11. Create User Profile Component
+  - File: src/components/user/UserProfile.vue
+  - Build user profile display and edit interface
+  - Include avatar upload functionality
+  - Purpose: Allow users to manage their profile
+  - _Leverage: Element Plus upload component_
+  - _Requirements: FR4.1, FR4.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Vue.js Developer | Task: Build user profile display and edit interface following requirements FR4.1 and FR4.2 | Restrictions: Validate profile updates, handle image uploads, provide feedback | Success: Users can view and edit their profile successfully. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 10: Implement Auth Guards for Routes
-- [ ] **Files**: `src/router/guards.ts`, `src/router/index.ts` (update)
-- **Description**: Create navigation guards for protected routes
-- **Dependencies**: Task 7
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Implement Vue Router navigation guards for auth
-  Restrictions: Handle redirect after login, preserve query params
-  _Leverage: Vue Router, auth store
-  _Requirements: FR2.3, AC4 from requirements.md
-  Success: Protected routes redirect to login when needed
-  ```
+- [ ] 12. Add Password Reset Flow
+  - File: src/views/PasswordReset.vue, src/auth/auth.service.ts (update)
+  - Implement password reset functionality
+  - Include email verification step
+  - Purpose: Allow users to recover accounts
+  - _Leverage: Email service, token generation_
+  - _Requirements: FR5.1, FR5.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Full-stack Developer | Task: Implement password reset functionality following requirements FR5.1 and FR5.2 | Restrictions: Secure token generation, validate email ownership, expire tokens | Success: Password reset works securely with email verification. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 11: Create API Interceptors
-- [ ] **Files**: `src/api/interceptors.ts`, `src/api/request.ts` (update)
-- **Description**: Set up Axios interceptors for token handling and refresh
-- **Dependencies**: Task 7
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Configure Axios interceptors for auth headers and token refresh
-  Restrictions: Handle 401 errors, queue failed requests during refresh
-  _Leverage: Existing axios setup
-  _Requirements: FR1.4, Error Handling from design.md
-  Success: API calls automatically include auth and handle expiry
-  ```
+- [ ] 13. Implement OAuth Integration
+  - File: src/auth/strategies/gitlab.strategy.ts
+  - Add GitLab OAuth authentication
+  - Handle OAuth callback and user creation
+  - Purpose: Enable social login
+  - _Leverage: Passport OAuth strategy_
+  - _Requirements: FR6.1, FR6.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: OAuth Integration Developer | Task: Add GitLab OAuth authentication following requirements FR6.1 and FR6.2 | Restrictions: Handle OAuth flow securely, merge accounts properly, validate tokens | Success: Users can login with GitLab accounts. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 12: Create User Profile Components
-- [ ] **Files**: `src/views/auth/ProfileView.vue`, `src/components/auth/UserDropdown.vue`
-- **Description**: Build user profile management UI components
-- **Dependencies**: Task 8, Task 9
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Frontend Developer
-  Task: Create profile view and user dropdown menu
-  Restrictions: Allow password change, avatar upload
-  _Leverage: Element Plus, auth store
-  _Requirements: User Story 6, FR3.2 from requirements.md
-  Success: Users can view and update their profile
-  ```
+- [ ] 14. Add Two-Factor Authentication
+  - File: src/auth/services/totp.service.ts
+  - Implement TOTP-based 2FA
+  - Include QR code generation for authenticator apps
+  - Purpose: Enhance account security
+  - _Leverage: speakeasy for TOTP, qrcode library_
+  - _Requirements: NFR3.1, NFR3.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Security Developer | Task: Implement TOTP-based 2FA following requirements NFR3.1 and NFR3.2 | Restrictions: Use standard TOTP algorithm, secure secret storage, provide backup codes | Success: 2FA works with standard authenticator apps. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-### Integration Tasks
+- [ ] 15. Create Auth API Client
+  - File: src/api/auth.ts
+  - Frontend API client for authentication endpoints
+  - Handle token storage and refresh
+  - Purpose: Manage authentication API calls
+  - _Leverage: Axios instance, interceptors_
+  - _Requirements: API integration requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend API Developer | Task: Create auth API client following integration requirements | Restrictions: Handle errors properly, manage token lifecycle, maintain type safety | Success: Auth API client works reliably with proper error handling. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 13: Implement GitLab OAuth Flow
-- [ ] **Files**: `src/auth/strategies/gitlab.strategy.ts`, `src/views/auth/LoginView.vue` (update)
-- **Description**: Add GitLab OAuth authentication option
-- **Dependencies**: Task 5, Task 8
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Full-stack Developer
-  Task: Implement GitLab OAuth 2.0 authentication flow
-  Restrictions: Handle account linking for existing users
-  _Leverage: Passport OAuth2 strategy
-  _Requirements: User Story 3, FR1.3 from requirements.md
-  Success: Users can login via GitLab OAuth
-  ```
+- [ ] 16. Add Token Refresh Logic
+  - File: src/api/interceptors/auth.interceptor.ts
+  - Implement automatic token refresh
+  - Handle refresh token rotation
+  - Purpose: Maintain seamless authentication
+  - _Leverage: Axios interceptors_
+  - _Requirements: FR2.3, NFR2.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Implement automatic token refresh following requirements FR2.3 and NFR2.2 | Restrictions: Avoid infinite loops, handle concurrent requests, maintain security | Success: Tokens refresh automatically without user intervention. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 14: Add Password Reset Flow
-- [ ] **Files**: `src/auth/auth.controller.ts`, `src/views/auth/ResetPasswordView.vue`
-- **Description**: Implement password reset via email
-- **Dependencies**: Task 3, Task 9
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: Full-stack Developer
-  Task: Create password reset flow with email verification
-  Restrictions: Tokens expire in 24 hours, one-time use
-  _Leverage: Email service, crypto for tokens
-  _Requirements: User Story 5, FR3.3 from requirements.md
-  Success: Users can reset forgotten passwords
-  ```
+- [ ] 17. Write Unit Tests - Backend
+  - File: src/auth/**/*.spec.ts
+  - Test auth service and controller
+  - Cover all authentication flows
+  - Purpose: Ensure backend code quality
+  - _Leverage: Jest testing framework_
+  - _Requirements: Testing requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Write unit tests for auth service and controller following testing requirements | Restrictions: Test all flows, mock dependencies, maintain isolation | Success: All auth backend tests pass with good coverage. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-### Testing Tasks
+- [ ] 18. Write Unit Tests - Frontend
+  - File: src/components/auth/**/*.spec.ts, src/views/**/*.spec.ts
+  - Test auth components and store
+  - Cover user interactions
+  - Purpose: Ensure frontend code quality
+  - _Leverage: Vitest, Vue Test Utils_
+  - _Requirements: Testing requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend QA Engineer | Task: Test auth components and store following testing requirements | Restrictions: Test user scenarios, mock API calls, ensure stability | Success: Frontend auth tests pass with good coverage. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 15: Write Unit Tests
-- [ ] **Files**: `src/auth/__tests__/*.spec.ts`, `src/stores/__tests__/auth.spec.ts`
-- **Description**: Create comprehensive unit tests for auth module
-- **Dependencies**: Tasks 1-14
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: QA Developer
-  Task: Write unit tests for auth service methods and store actions
-  Restrictions: Achieve >80% code coverage
-  _Leverage: Jest, @vue/test-utils
-  _Requirements: NFR4.3, Testing Strategy from design.md
-  Success: All critical paths have test coverage
-  ```
+- [ ] 19. Integration Testing
+  - File: tests/e2e/authentication.spec.ts
+  - End-to-end authentication flow tests
+  - Test complete user journeys
+  - Purpose: Validate full authentication system
+  - _Leverage: Playwright_
+  - _Requirements: E2E testing requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: E2E Test Engineer | Task: Write end-to-end authentication flow tests following testing requirements | Restrictions: Test real scenarios, handle async operations, ensure reliability | Success: E2E tests validate all authentication flows. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-#### Task 16: Write E2E Tests
-- [ ] **Files**: `tests/e2e/auth.spec.ts`
-- **Description**: Create end-to-end tests for authentication flows
-- **Dependencies**: Tasks 1-14
-- **_Prompt**: 
-  ```
-  Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task:
-  Role: QA Developer
-  Task: Write E2E tests for registration, login, and logout flows
-  Restrictions: Test both success and failure scenarios
-  _Leverage: Playwright or Cypress
-  _Requirements: Testing Strategy from design.md
-  Success: Critical user journeys are tested
-  ```
+- [ ] 20. Security Hardening
+  - File: Multiple files
+  - Implement rate limiting and brute force protection
+  - Add security headers and CSRF protection
+  - Purpose: Enhance security posture
+  - _Leverage: Security middleware, helmet_
+  - _Requirements: NFR3.1, NFR3.2_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Security Engineer | Task: Implement rate limiting and brute force protection following requirements NFR3.1 and NFR3.2 | Restrictions: Balance security and usability, log attempts, implement progressive delays | Success: System is protected against common attacks. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._
 
-## Task Summary
-
-**Total Tasks**: 16
-- Backend: 6 tasks
-- Frontend: 6 tasks
-- Integration: 2 tasks
-- Testing: 2 tasks
-
-**Estimated Time**: 2-3 weeks
-- Week 1: Tasks 1-6 (Backend foundation)
-- Week 2: Tasks 7-14 (Frontend and integration)
-- Week 3: Tasks 15-16 (Testing and polish)
-
-## Success Criteria
-
-- [ ] All unit tests passing with >80% coverage
-- [ ] E2E tests covering critical paths
-- [ ] Security audit passed (no critical vulnerabilities)
-- [ ] Performance benchmarks met (<500ms response time)
-- [ ] Documentation complete (API docs, user guides)
+- [ ] 21. Documentation
+  - File: docs/authentication.md
+  - Document auth flows and API endpoints
+  - Include integration guide
+  - Purpose: Help developers understand auth system
+  - _Leverage: Documentation templates_
+  - _Requirements: Documentation requirements_
+  - _Prompt: Implement the task for spec user-authentication, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Technical Writer | Task: Document auth flows and API endpoints following documentation requirements | Restrictions: Keep updated, include examples, explain security | Success: Documentation is comprehensive and helpful. Instructions: Set this task to in-progress [-] in tasks.md before starting, then mark as complete [x] when finished._

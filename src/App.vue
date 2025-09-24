@@ -1,6 +1,10 @@
 <template>
   <el-config-provider :locale="zhCn">
-    <el-container class="app-container">
+    <!-- 登录页面不显示布局 -->
+    <router-view v-if="isLoginPage" />
+    
+    <!-- 其他页面显示完整布局 -->
+    <el-container v-else class="app-container">
       <!-- 侧边栏 -->
       <el-aside width="200px" class="app-aside">
         <div class="logo">
@@ -88,6 +92,7 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
+const isLoginPage = computed(() => route.path === '/login')
 const activeMenu = computed(() => route.path)
 const username = computed(() => userStore.currentUser?.username || '用户')
 const userAvatar = computed(() => userStore.currentUser?.avatar || '')
