@@ -1,0 +1,14 @@
+{
+  "filePath": ".spec-workflow/specs/ai-code-review/requirements.md",
+  "currentVersion": 1,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-09-24T17:27:06.101Z",
+      "trigger": "initial",
+      "approvalId": "approval_1758734826100_e3oe3t313",
+      "approvalTitle": "AI代码审查需求文档"
+    }
+  ]
+}

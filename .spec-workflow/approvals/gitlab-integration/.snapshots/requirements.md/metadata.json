@@ -1,0 +1,14 @@
+{
+  "filePath": ".spec-workflow/specs/gitlab-integration/requirements.md",
+  "currentVersion": 1,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-09-24T17:26:52.403Z",
+      "trigger": "initial",
+      "approvalId": "approval_1758734812401_1dibla0is",
+      "approvalTitle": "GitLab集成需求文档"
+    }
+  ]
+}
