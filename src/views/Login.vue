@@ -146,9 +146,9 @@
                       记住我
                     </label>
                   </div>
-                  <a href="#" class="text-sm text-blue-600 hover:text-blue-500 transition duration-200">
+                  <router-link to="/password-reset" class="text-sm text-blue-600 hover:text-blue-500 transition duration-200">
                     忘记密码？
-                  </a>
+                  </router-link>
                 </div>
 
                 <!-- 登录按钮 -->
@@ -195,9 +195,9 @@
             <div class="px-6 sm:px-8 py-4 bg-gray-50 border-t border-gray-200">
               <p class="text-sm text-center text-gray-600">
                 还没有账号？
-                <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                <router-link to="/register" class="font-medium text-blue-600 hover:text-blue-500">
                   立即注册
-                </a>
+                </router-link>
               </p>
             </div>
           </div>
@@ -213,7 +213,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import { ElMessage } from 'element-plus'
@@ -230,29 +230,73 @@ const loginForm = reactive({
   remember: false
 })
 
+// 表单验证规则
+const validateForm = () => {
+  if (!loginForm.username) {
+    ElMessage.warning('请输入用户名')
+    return false
+  }
+  if (!loginForm.password) {
+    ElMessage.warning('请输入密码')
+    return false
+  }
+  if (loginForm.password.length < 6) {
+    ElMessage.warning('密码长度不能少于6位')
+    return false
+  }
+  return true
+}
+
+// 页面加载时检查记住的用户名
+onMounted(() => {
+  const savedUsername = localStorage.getItem('rememberedUsername')
+  if (savedUsername) {
+    loginForm.username = savedUsername
+    loginForm.remember = true
+  }
+})
+
 const handleLogin = async () => {
+  // 表单验证
+  if (!validateForm()) {
+    return
+  }
+
   loading.value = true
   
   try {
-    // 模拟登录延迟
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    const success = await userStore.login(loginForm.username, loginForm.password)
+    // 调用用户 store 的登录方法（使用新的接口格式）
+    const success = await userStore.login({
+      username: loginForm.username,
+      password: loginForm.password,
+      rememberMe: loginForm.remember
+    })
     
     if (success) {
+      // 处理记住我功能
+      if (loginForm.remember) {
+        localStorage.setItem('rememberedUsername', loginForm.username)
+      } else {
+        localStorage.removeItem('rememberedUsername')
+      }
+      
       ElMessage.success('登录成功！')
-      router.push('/')
+      
+      // 获取重定向地址或跳转到首页
+      const redirect = router.currentRoute.value.query.redirect as string
+      router.push(redirect || '/dashboard')
     } else {
       ElMessage.error('用户名或密码错误')
     }
-  } catch (error) {
-    ElMessage.error('登录失败，请重试')
+  } catch (error: any) {
+    ElMessage.error(error.message || '登录失败，请重试')
   } finally {
     loading.value = false
   }
 }
 
 const handleGitLabLogin = () => {
-  ElMessage.info('GitLab OAuth 登录功能开发中...')
+  // GitLab OAuth 登录
+  window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/gitlab`
 }
 </script>
